@@ -3,6 +3,7 @@ import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 import dotenv from "dotenv";
+import dbConnection from "./Connection/db.js";
 
 dotenv.config({ path: "./config.env" });
 
@@ -18,6 +19,8 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
   },
 });
+
+dbConnection();
 server.listen(process.env.PORT, () => {
   console.log(`server running on PORT: ${process.env.PORT}`);
 });

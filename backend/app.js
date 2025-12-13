@@ -4,6 +4,7 @@ import { Server } from "socket.io";
 import cors from "cors";
 import dotenv from "dotenv";
 import dbConnection from "./Connection/db.js";
+import UserRoute from "./Routes/chatRoute.js";
 
 dotenv.config({ path: "./config.env" });
 
@@ -19,6 +20,8 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
   },
 });
+
+app.get("/api/v1", UserRoute);
 
 dbConnection();
 server.listen(process.env.PORT, () => {

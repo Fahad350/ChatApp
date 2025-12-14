@@ -4,7 +4,7 @@ import { Server } from "socket.io";
 import cors from "cors";
 import dotenv from "dotenv";
 import dbConnection from "./Connection/db.js";
-import UserRoute from "./Routes/chatRoute.js";
+import UserRoute from "./Routes/userRoute.js";
 
 dotenv.config({ path: "./config.env" });
 

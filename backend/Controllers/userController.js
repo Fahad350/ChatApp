@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import user from "../Models/userModel.js";
 import { json } from "express";
 
-const handleSignup = async (req, res) => {
+export const handleSignup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
@@ -38,7 +38,7 @@ const handleSignup = async (req, res) => {
   }
 };
 
-const handleLogin = async (req, res) => {
+export const handleLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -61,6 +61,18 @@ const handleLogin = async (req, res) => {
         message: "invalid username or password",
       });
     }
+
+    const token = jwt.sign({ id: isExist._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    // ✅ Save token in httpOnly cookie
+    res.cookie("token", token, {
+      httpOnly: true, // cannot access via JS
+      secure: process.env.NODE_ENV === "production", // https only in prod
+      sameSite: "strict", // CSRF protection
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
 
     return res.status(200).json({
       message: "user loged in successfully!",
